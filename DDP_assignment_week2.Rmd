@@ -1,0 +1,79 @@
+---
+title: "Where I've been (Europe)"
+author: "dortje"
+date: "16 September 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+```{r show_map, warnings=FALSE, message=FALSE}
+library(leaflet)
+
+cities = data.frame(
+    name = c("Rostock", "Hamburg", "Nürnberg", "Dresden", "München", "Reykjavik", "Tromsø", "Reine", "S'Agaró", "København", "Barcelona", "Heidelberg", "Athens", "Rom", "Weimar"),
+    lat = c(54.092441, 53.551085, 49.452102, 51.050409, 48.135125, 64.126521, 69.649205, 67.932387, 41.795233, 55.676097, 41.385064, 49.398752, 37.983810, 41.902783, 50.979493),
+    lng = c(12.099147, 9.993682, 11.076665, 13.737262, 11.581980,  -21.817439, 18.955324, 13.088733, 3.054436, 12.568337, 2.173403, 8.672434, 23.727539, 12.496366, 11.323544),
+    been_or_wanna = c("been","been","been","been","been","been","been","been","been","been", "wanna", "wanna", "wanna", "been", "been")
+)
+
+getColor <- function(c) {
+  sapply(c$been_or_wanna, function(bw) {
+  if(bw == "been") {
+    "green"
+  } else 
+    "blue"
+  })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = getColor(cities),
+  library = 'ion',
+  markerColor = getColor(cities)
+)
+
+cities %>% 
+    leaflet() %>% 
+    addTiles() %>% 
+    addAwesomeMarkers(popup = cities$name, icon = icons, clusterOptions = markerClusterOptions()) %>%
+    addLegend(labels=c("been there", "wanna go"), colors=c("green", "blue"))
+```
+
+The code to produce this map:
+
+```{r show_code, eval=FALSE, echo=TRUE}
+library(leaflet)
+
+cities = data.frame(
+    name = c("Rostock", "Hamburg", "Nürnberg", "Dresden", "München", "Reykjavik", "Tromsø", "Reine", "S'Agaró", "København", "Barcelona", "Heidelberg", "Athens", "Rom", "Weimar"),
+    lat = c(54.092441, 53.551085, 49.452102, 51.050409, 48.135125, 64.126521, 69.649205, 67.932387, 41.795233, 55.676097, 41.385064, 49.398752, 37.983810, 41.902783, 50.979493),
+    lng = c(12.099147, 9.993682, 11.076665, 13.737262, 11.581980,  -21.817439, 18.955324, 13.088733, 3.054436, 12.568337, 2.173403, 8.672434, 23.727539, 12.496366, 11.323544),
+    been_or_wanna = c("been","been","been","been","been","been","been","been","been","been", "wanna", "wanna", "wanna", "been", "been")
+)
+
+getColor <- function(c) {
+  sapply(c$been_or_wanna, function(bw) {
+  if(bw == "been") {
+    "green"
+  } else 
+    "blue"
+  })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = getColor(cities),
+  library = 'ion',
+  markerColor = getColor(cities)
+)
+
+cities %>% 
+    leaflet() %>% 
+    addTiles() %>% 
+    addAwesomeMarkers(popup = cities$name, icon = icons, clusterOptions = markerClusterOptions()) %>%
+    addLegend(labels=c("been there", "wanna go"), colors=c("green", "blue"))```
